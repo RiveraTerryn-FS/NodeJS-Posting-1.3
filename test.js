@@ -1,28 +1,22 @@
 // Task: Refactor the following code to use a promise chain instead of nested callbacks.
 // The function should fetch a user, then their posts, and finally their comments.
 function fetchUserData(userId) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const user = { id: userId, name: 'User ' + userId };
-            resolve(user);
-        }, 1000);
-    });
+    if (!userId) {
+        return Promise.reject(new Error("User ID not supplied"));
+    }
+    return Promise.resolve({ id: userId, name: "User " + userId });
 }
 function fetchUserPosts(userId) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const posts = ['Post 1', 'Post 2', 'Post 3'];
-            resolve(posts);
-        }, 1000);
-    });
+      if (!userId) {
+        return Promise.reject(new Error("User ID not supplied"));
+    }
+    return Promise.resolve(['Post 1', 'Post 2', 'Post 3']);
 }
 function fetchPostComments(postId) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const comments = ['Comment 1', 'Comment 2'];
-            resolve(comments);
-        }, 1000);
-     });   
+    if (!postId) {
+        return Promise.reject(new Error("Post ID not supplied"));
+    }
+    return Promise.resolve(['Comment 1', 'Comment 2']);
 }
 // Example usage (to be refactored):
 fetchUserData(1)
@@ -32,7 +26,7 @@ fetchUserData(1)
     })
     .then((posts) => {
         console.log("Posts:", posts);
-        return fetchPostComments(posts[0].id);
+        return fetchPostComments(posts[0]);
     })
     .then((comments) => {
         console.log("Comments:", comments);
